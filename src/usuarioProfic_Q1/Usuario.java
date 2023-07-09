@@ -6,25 +6,27 @@ public class Usuario {
     private String nome;
     private int categoria;
 
-    public Usuario(String login, String senhaCriptografada, String nome, int categoria) {
+    public Usuario(String login, String senha, String nome, int categoria) {
+        this.login = login;
+        this.senha = criptografaSenha(senha);
+        this.nome = nome;
+        this.categoria = categoria;
     }
 
-    // Implementação do método criptografaSenha()
     public static String criptografaSenha(String senha) {
         StringBuilder senhaCriptografada = new StringBuilder();
 
         for (int i = 0; i < senha.length(); i++) {
             char c = senha.charAt(i);
 
-            // Não modificar os caracteres @ e $
             if (c == '@' || c == '$') {
                 senhaCriptografada.append(c);
             }
-            // Para o primeiro caractere, mover 1 letra para direita
+
             else if (i == 0) {
-                senhaCriptografada.append((char) (c + 1));
+                senhaCriptografada.append((char) (c - 1));
             }
-            // Para todos os demais caracteres, mover 2 letras (ou números) para a direita
+
             else {
                 senhaCriptografada.append((char) (c + 2));
             }
@@ -39,33 +41,34 @@ public class Usuario {
         for (int i = 0; i < senha.length(); i++) {
             char c = senha.charAt(i);
 
-            // Não modificar os caracteres @ e $
             if (c == '@' || c == '$') {
                 senhaDescriptografada.append(c);
             }
-            // Para o primeiro caractere, mover 1 letra para direita
+
             else if (i == 0) {
                 senhaDescriptografada.append((char) (c + 1));
             }
-            // Para o último caractere, mover 1 letra para esquerda
+
             else if (i == senha.length() - 1) {
                 senhaDescriptografada.append((char) (c - 1));
             }
-            // Para todos os demais caracteres, mover 2 letras (ou números) para a esquerda
+
             else {
                 senhaDescriptografada.append((char) (c - 2));
             }
         }
-
         return senhaDescriptografada.toString();
     }
 
-    // Getters
     public String getLogin() {
         return login;
     }
 
     public String getSenha() {
+        return descriptografaSenha(senha);
+    }
+
+    public String getSenhaCriptografada() {
         return senha;
     }
 
@@ -77,7 +80,6 @@ public class Usuario {
         return categoria;
     }
 
-    // Setters
     public void setLogin(String login) {
         this.login = login;
     }
